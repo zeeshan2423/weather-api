@@ -19,6 +19,12 @@ const HealthController = require('../controllers/health.controller');
  * 
  * @returns {Object} Response with the status of the app, Redis, and WeatherAPI.
  */
-router.get('/', (req, res) => HealthController.getHealthStatus(req, res));
+router.get('/', async (req, res, next) => {
+  try {
+    await HealthController.getHealthStatus(req, res);
+  } catch (error) {
+    next(error);
+  }
+});
 
 module.exports = router;

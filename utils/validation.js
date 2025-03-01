@@ -34,7 +34,9 @@ const validateCityParam = (req, res, next) => {
   }
 
   // Sanitize: Trim whitespace and encode for URL safety
-  req.query.city = city.trim().replace(/,/g, '%2C'); // Encode commas in coordinates
+  req.query.city = city.trim()
+  .replace(/,/g, '%2C') // Encode commas
+  .replace(/\s+/g, '%20'); // Encode spaces; // Encode commas in coordinates
 
   next();
 };

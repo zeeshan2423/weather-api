@@ -1,11 +1,14 @@
-const { ApiResponse } = require('../utils/response');
+const { ApiError } = require('../utils/response');
 const environment = require('../config/env');
+const logger = require('../utils/logger');
 
 // Custom error handling middleware for Express
 const errorHandler = (err, req, res, next) => {
   // Log the error stack in development
   if (environment.nodeEnv === 'development') {
-    console.error('[Error Handler]', err.stack);
+    logger.error(err.message, { stack: err.stack });
+  } else {
+    logger.error(err.message);
   }
 
   // Default error structure
@@ -22,7 +25,12 @@ const errorHandler = (err, req, res, next) => {
   };
 
   // Send response
-  res.status(statusCode).json(errorResponse);
+  res.status(statusCode).json({
+    status: 'error',
+    message,
+    errorCode,
+    ...(process.env.NODE_ENV === 'development' && { stack: err.stack })
+  });
 };
 
 module.exports = errorHandler;

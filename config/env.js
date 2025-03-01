@@ -16,7 +16,6 @@ dotenv.config();
 
 // Validate required environment variables
 const requiredEnvVars = [
-  'PORT',
   'WEATHERAPI_API_KEY',
   'WEATHERAPI_BASE_URL',
   'REDIS_URL',

@@ -15,10 +15,11 @@ class WeatherService {
         logger.debug('Attempting API call...');
       const apiUrl = `${weatherApi.baseUrl}/current.json`;
       
+    const encodedCity = encodeURIComponent(city);
       const response = await axios.get(apiUrl, {
         params: {
           key: weatherApi.apiKey,
-          q: city,
+          q: encodedCity,
           aqi: 'no' // Exclude air quality data to simplify response
         }
       });

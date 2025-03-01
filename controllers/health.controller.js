@@ -4,7 +4,7 @@
  * Handles health check operations to monitor service dependencies and overall system status.
  * Performs connectivity checks for Redis and WeatherAPI, and aggregates results.
  */
-const redisClient = require('../config/redis');
+const { redisClient } = require('../config/redis');
 const axios = require('axios');
 const { weatherApi } = require('../config/env');
 const { ApiResponse } = require('../utils/response');

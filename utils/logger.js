@@ -30,17 +30,12 @@ const consoleFormat = winston.format.combine(
 // Create logger instance
 const logger = winston.createLogger({
   levels: logLevels,
-  format: winston.format.combine(
-    winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
-    winston.format.printf(({ timestamp, level, message }) => {
-      return `${timestamp} [${level.toUpperCase()}] ${message}`;
-    })
-  ),
+  format: consoleFormat,
   transports: [
+    
     new winston.transports.Console({
       format: winston.format.combine(
         winston.format.colorize({ colors: logColors }),
-        winston.format.simple()
       ),
       level: environment.nodeEnv === 'development' ? 'debug' : 'info'
     })

@@ -1,16 +1,22 @@
+
 const rateLimit = require('express-rate-limit');
-const { rateLimit: rateLimitConfig } = require('../config/env');
+const { rateLimit: config } = require('../config/env');
+const { ApiError } = require('../utils/response');
 
 // Create rate limiter middleware
-const limiter = rateLimit({
-  windowMs: rateLimitConfig.windowMs, // 15 minutes
-  max: rateLimitConfig.max, // 100 requests per window
+const rateLimiter  = rateLimit({
+
+  windowMs: config.windowMs, // 15 minutes
+  max: config.max, // 100 requests per window
   standardHeaders: true, // Return rate limit info in `RateLimit-*` headers
   legacyHeaders: false, // Disable deprecated `X-RateLimit-*` headers
-  message: {
-    status: 429,
-    message: 'Too many requests - please try again later.',
-  },
+  handler: (req, res, next) => {
+    next(new ApiError(
+      'Too many requests - please try again later.',
+      429,
+      'RATE_LIMIT_EXCEEDED'
+    ));
+  }
 });
 
-module.exports = limiter;
+module.exports = rateLimiter ;
